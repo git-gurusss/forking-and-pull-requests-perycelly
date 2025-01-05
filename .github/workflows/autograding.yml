@@ -1,0 +1,34 @@
+name: Autograding Forking and Pull Requests
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  grade:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the PR code
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    # Install tools if necessary
+    - name: Install jq (for JSON validation)
+      run: sudo apt-get install -y jq
+
+    # Validate the changes
+    - name: Validate Changes
+      run: |
+        # Check if example.txt has been edited
+        if ! grep -q "Student has made a change" example.txt; then
+          echo "❌ example.txt has not been edited correctly!"
+          exit 1
+        fi
+        echo "✅ example.txt has been edited as required!"
+
+    # Provide feedback
+    - name: Complete Grading
+      run: echo "✅ Autograding complete! Well done!"

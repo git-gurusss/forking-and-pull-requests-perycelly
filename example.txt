@@ -1,0 +1,7 @@
+Forking and pull requests are essential concepts in collaborative software development.
+
+- **Forking** allows you to create a copy of a repository under your own GitHub account. You can make changes to this copy without affecting the original repository.
+- Once you’ve made your changes, you can use a **pull request** to propose those changes to the original repository. 
+- Pull requests facilitate collaboration by allowing project maintainers to review, discuss, and merge contributions.
+
+By understanding these concepts, you can effectively contribute to open-source projects and collaborate with other developers!

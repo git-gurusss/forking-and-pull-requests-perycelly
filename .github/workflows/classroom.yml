@@ -1,0 +1,48 @@
+name: 🚀 Autograding Forking and Pull Requests
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  grade:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 🔍 Step 1: Checkout the PR code
+    - name: 📂 Checkout Repository
+      uses: actions/checkout@v3
+
+    # 🔧 Step 2: Install necessary tools
+    - name: 🛠️ Install jq (for JSON validation)
+      run: sudo apt-get install -y jq
+
+    # 🚨 Step 3: Protect critical paths
+    - name: 🛡️ Check Protected Paths
+      run: |
+        echo "🔒 Validating changes to protected paths..."
+        protected_paths=(".github/")
+        for path in "${protected_paths[@]}"; do
+          if git diff --name-only HEAD^ HEAD | grep -q "^$path"; then
+            echo "❌ Unauthorized change detected in $path!"
+            exit 1
+          fi
+        done
+        echo "✅ No unauthorized changes detected in protected paths!"
+
+    # ✅ Step 4: Validate the changes
+    - name: 🔎 Validate Changes
+      run: |
+        echo "🔍 Checking the contents of example.txt..."
+        # Check if example.txt has been edited
+        if ! grep -q "Student has made a change" example.txt; then
+          echo "❌ example.txt has not been edited correctly!"
+          exit 1
+        fi
+        echo "✅ example.txt has been edited as required!"
+
+    # 🎉 Step 5: Provide feedback
+    - name: 🏆 Complete Grading
+      run: echo "✅ Autograding complete! Well done! 🎉"
